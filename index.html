@@ -1,111 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A Special Message ❤️</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-            text-align: center;
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background: linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%); 
+            display: flex; align-items: center; justify-content: center; 
+            height: 100vh; margin: 0; overflow: hidden; text-align: center; 
         }
-
-        #valentine-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            padding: 2.5rem;
-            border-radius: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-            width: 90%;
-            max-width: 450px;
+        #valentine-card { 
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px);
+            padding: 2.5rem; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); 
+            width: 90%; max-width: 450px; position: relative; border: 1.5px solid rgba(255,255,255,0.6);
+            min-height: 300px; display: flex; flex-direction: column; justify-content: center;
+        }
+        h1 { color: #d63384; font-size: 1.8rem; margin-bottom: 1rem; }
+        
+        /* The container keeps them side-by-side initially */
+        .btn-container { 
+            margin-top: 2rem; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 20px; 
             position: relative;
-            border: 1.5px solid rgba(255, 255, 255, 0.6);
+            height: 60px;
         }
 
-        h1 {
-            color: #d63384;
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
+        button { 
+            padding: 12px 28px; 
+            font-size: 1.1rem; 
+            font-weight: bold; 
+            border-radius: 50px; 
+            border: none; 
+            cursor: pointer; 
+            transition: transform 0.2s; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        .btn-container {
-            margin-top: 2rem;
-            height: 100px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
+        #yes-btn { background-color: #ff4d6d; color: white; position: relative; }
+        
+        /* No button starts in the flow, then goes absolute on first hover */
+        #no-btn { 
+            background-color: #fb6f92; 
+            color: white; 
+            position: relative; 
+            z-index: 999;
         }
 
-        button {
-            padding: 12px 28px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 50px;
-            border: none;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        #yes-btn {
-            background-color: #ff4d6d;
-            color: white;
-        }
-
-        #no-btn {
-            background-color: #fb6f92;
-            color: white;
-            position: absolute;
-        }
-
-        #gallery {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .photo-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin: 20px 0;
-        }
-
-        .photo-grid img {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            object-fit: cover;
-            border-radius: 12px;
-            border: 3px solid #ffb3c1;
-        }
-
-        #counter-box {
-            margin-bottom: 15px;
-        }
-
-        #days-count {
-            font-size: 2.5rem;
-            color: #ff4d6d;
-            margin: 5px 0;
-        }
-
-        .final-msg {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #c9184a;
-        }
+        #gallery { display: none; flex-direction: column; align-items: center; }
+        .photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+        .photo-grid img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 12px; border: 3px solid #ffb3c1; }
+        #days-count { font-size: 2.5rem; color: #ff4d6d; margin: 5px 0; }
+        .final-msg { font-size: 1.3rem; font-weight: bold; color: #c9184a; }
     </style>
 </head>
-
 <body>
 
     <div id="valentine-card">
@@ -137,25 +90,28 @@
     <script>
         function moveNo() {
             const btn = document.getElementById('no-btn');
+            // Change to absolute the first time she tries to click it
+            btn.style.position = 'absolute';
+            
+            // Generate random position within the visible window
             const x = Math.random() * (window.innerWidth - btn.offsetWidth);
             const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            
             btn.style.left = x + 'px';
             btn.style.top = y + 'px';
         }
 
         function celebrate() {
-            // Calculate Days Together (July 3, 2021)
-            const startDate = new Date("2021-07-03");
+            // Calculate days since anniversary (July 3, 2021)
+            const startDate = new Date("2021-07-03"); 
             const today = new Date();
             const diffTime = Math.abs(today - startDate);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
             document.getElementById('days-count').innerText = diffDays;
 
-            // Show Gallery
             document.getElementById('ask-section').style.display = 'none';
             document.getElementById('gallery').style.display = 'flex';
-
-            // Confetti
+            
             var end = Date.now() + (3 * 1000);
             (function frame() {
                 confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff4d6d', '#ff758f'] });
@@ -165,5 +121,4 @@
         }
     </script>
 </body>
-
 </html>
